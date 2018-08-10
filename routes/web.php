@@ -17,6 +17,7 @@ Route::get('/user','IndexController@getUser');
 Route::get('/lang/{lang}',function ($lang){
     $curr_lang = App::getLocale();
     App::setLocale($lang);
-    $lang = __('messages.welcome');
+    if(App::isLocale($lang))
+        $lang = __('messages.welcome');
     return $curr_lang."|".$lang;
 });
