@@ -90,6 +90,7 @@ class IndexController extends Controller
     }
 
     public function getUser(){
+        return "okok";
         $data = User::all();
         foreach ($data as $row){
             dd($row->Code);
