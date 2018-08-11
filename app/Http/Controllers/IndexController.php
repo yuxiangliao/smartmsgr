@@ -28,14 +28,13 @@ class IndexController extends Controller
 
         $result = $dictionary->loadDictionaries("INTERFACE","","");
 
-        //echo $this->get_variable_name(${$test})."ok";die();
         foreach ($result as $row)
         {
             //echo $row['Code'].'|'.$row->Description;
             ${$row['Code']} = $row['Description'];
            //echo ${$row['Code']};
         }
-//die();
+
         $AUTOCOMPLETE = "autocomplete=\"off\"";
         $USER_NAME_COOKIE = $_COOKIE['VA_USER_CODE'];
         if ( $USER_NAME_COOKIE == "" )
