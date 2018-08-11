@@ -11,7 +11,8 @@
 |
 */
 
-Route::get('/','IndexController@Index');
+//Route::get('/','IndexController@Index');
+Route::get('/{langID}','IndexController@Index');
 Route::get('/user','IndexController@getUser');
 
 Route::get('/lang/{lang}',function ($lang){

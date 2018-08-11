@@ -1,0 +1,62 @@
+*{padding:0px;margin:0px;}
+body{font-size:9pt;background: #d3e1ee  top center no-repeat;}
+table{border:1px;border-collapse:collapse;}
+b{font-size:10pt;}
+input.text{width:100px;border:1px #404040 solid;font-size:9pt;padding:2px 0px 2px 5px;}
+input.submit{width:74px;height:21px;color:#36434E;background:url("button.png") no-repeat;border:0px;cursor:pointer;font-size:12px;}
+input.submit:hover{background-position:0 -21px;font-size:12px;}
+a{color:#000000;}
+
+input.BigButtonHover{width:125px;height:24px;color:#000000;background:url("big_btn_c.png") no-repeat;border:0px;cursor:pointer;font-size:13px;background-position:0 -24px;}
+input.BigButton{width:125px;height:24px;color:#36434E;background:url("big_btn_c.png") no-repeat;border:0px;cursor:pointer;font-size:13px;}
+input.BigButton:hover{color:#FFFFFF;background-position:0 -24px;font-size:13px;}
+
+
+.big1   { font-size: 12pt;COLOR: #000000;}
+/* 提示框样式 */
+.MessageBox{
+   height:90px;
+   border:1px #83ACCF dotted;
+   background:url("/images/white_bg.png");
+   margin-top:15px;
+   margin-bottom:15px;
+}
+.MessageBox td.msg{
+   padding:5px 20px 10px 90px;
+   font-weight:bold;
+}
+.MessageBox td.msg h4.title{
+   color:#36434E;
+   font-size:18pt;
+   border-bottom:1px #83ACCF dotted;
+   margin-bottom:10px;
+}
+.MessageBox td.msg div.content{
+   color:#EBBF47;
+   border:none;
+}
+.MessageBox td.error{
+   background:url("/images/icon64_error.png") no-repeat top left;
+   background-position:10px 10px;
+}
+.MessageBox td.info{
+   background:url("/images/icon64_info.png") no-repeat top left;
+   background-position:10px 10px;
+}
+.MessageBox td.warning{
+   background:url("/images/icon64_warning.png") no-repeat top left;
+   background-position:10px 10px;
+}
+.MessageBox td.forbidden{
+   background:url("/images/icon64_forbidden.png") no-repeat top left;
+   background-position:10px 10px;
+}
+.MessageBox td.stop{
+   background:url("/images/icon64_stop.png") no-repeat top left;
+   background-position:10px 10px;
+}
+.MessageBox td.blank{
+   height:40px;
+   padding:10px 20px 10px 20px;
+   text-align:center;
+}

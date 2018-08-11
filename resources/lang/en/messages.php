@@ -7,5 +7,8 @@
  */
 
 return [
-  'welcome'=>'Welcome to our application',
+    'welcome'=>'Welcome to our application',
+    "lg_username"=>'User Name',
+    "lg_password"=>'Password',
+    "lg_login"=>'Login',
 ];

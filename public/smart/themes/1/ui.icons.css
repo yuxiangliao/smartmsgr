@@ -1,0 +1,76 @@
+
+.icon_search_16 {
+    background-image: url( icons/16/Search.gif ) !important;
+}
+.icon_search_24 {
+    background-image: url( icons/24/Search.gif ) !important;
+}
+.icon_search_32 {
+    background-image: url( icons/32/Search.gif ) !important;
+}
+.icon_search_48 {
+    background-image: url( icons/48/Search.gif ) !important;
+}
+
+
+.icon_new_16 {
+    background-image: url( icons/16/Health.gif ) !important;
+}
+.icon_new_24 {
+    background-image: url( icons/24/Health.gif ) !important;
+}
+.icon_new_32 {
+    background-image: url( icons/32/Health.gif ) !important;
+}
+.icon_new_48 {
+    background-image: url( icons/48/Health.gif ) !important;
+}
+
+.icon_delete_16 {
+    background-image: url( icons/16/Minus.gif ) !important;
+}
+.icon_delete_24 {
+    background-image: url( icons/24/Minus.gif ) !important;
+}
+.icon_delete_32 {
+    background-image: url( icons/32/Minus.gif ) !important;
+}
+.icon_delete_48 {
+    background-image: url( icons/48/Minus.gif ) !important;
+}
+
+.icon_modify_16 {
+    background-image: url( icons/16/Write.gif ) !important;
+}
+.icon_modify_24 {
+    background-image: url( icons/24/Write.gif ) !important;
+}
+.icon_modify_32 {
+    background-image: url( icons/32/Write.gif ) !important;
+}
+.icon_modify_48 {
+    background-image: url( icons/48/Write.gif ) !important;
+}
+
+.icon_refresh_16 {
+    background-image: url( icons/16/Refresh.gif ) !important;
+}
+.icon_refresh_24 {
+    background-image: url( icons/24/Refresh.gif ) !important;
+}
+.icon_refresh_32 {
+    background-image: url( icons/32/Refresh.gif ) !important;
+}
+.icon_refresh_48 {
+    background-image: url( icons/48/Refresh.gif ) !important;
+}
+
+
+.icon_msg_error_16 {
+    background-image: url( icons/16/exclamationEx.gif ) !important;
+}
+
+.icon_msg_info_16 {
+    background-image: url( icons/16/informationEx.gif) !important;
+}
+
