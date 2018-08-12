@@ -2,41 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SysLang;
 use App\Models\User;
+use App\Models\UserOnline;
 use Illuminate\Http\Request;
 use App\Models\Dictionary;
+use Illuminate\Support\Facades\Session;
+
 class IndexController extends Controller
 {
-    //
-    public function get_variable_name(&$var, $scope=null){
-        $scope = $scope==null? $GLOBALS : $scope; // 如果没有范围则在globals中找寻
-        // 因有可能有相同值的变量,因此先将当前变量的值保存到一个临时变量中,然后再对原变量赋唯一值,以便查找出变量的名称,找到名字后,将临时变量的值重新赋值到原变量
-        $tmp = $var;
-
-        $var = 'tmp_value_'.mt_rand();
-        $name = array_search($var, $scope, true); // 根据值查找变量名称
-        $var = $tmp;
-        return $name;
+    private $dictionary;
+    private $useronline;
+    private $user;
+    public function __construct(Dictionary $dictionary,
+        UserOnline $useronline,User $user)
+    {
+        $this->dictionary = $dictionary;
+        $this->useronline = $useronline;
+        $this->user = $user;
     }
-
-    public function Index(Request $request,Dictionary $dictionary,$langID){
+    
+    public function Index(Request $request,$langID){
         $RAND_NUM = rand();
         $RAND_NUM = md5($RAND_NUM);
         $request->session()->put("LG_RAND",$RAND_NUM);
 
         //session_write_close();
 
-        $result = $dictionary->loadDictionaries("INTERFACE","","");
+        $result = $this->dictionary->loadDictionaries("INTERFACE","","");
 
         foreach ($result as $row)
         {
-            //echo $row['Code'].'|'.$row->Description;
             ${$row['Code']} = $row['Description'];
-           //echo ${$row['Code']};
         }
 
         $AUTOCOMPLETE = "autocomplete=\"off\"";
-        $USER_NAME_COOKIE = $_COOKIE['VA_USER_CODE'];
+        $USER_NAME_COOKIE =$request->cookie('VA_USER_CODE'); //$_COOKIE['VA_USER_CODE'];
         if ( $USER_NAME_COOKIE == "" )
         {
             $FOCUS = "USERNAME";
@@ -45,8 +46,7 @@ class IndexController extends Controller
         {
             $FOCUS = "PASSWORD";
         }
-        //$langID = '1';
-
+        
         $JAVA_SCRIPT = "<script>function CheckForm(){";
         $JAVA_SCRIPT.= "sUser = $('#USERNAME').val();sUser=sUser.toUpperCase();";
         $JAVA_SCRIPT.= "sPwd = $('#PASSWORD').val();sPwd=hex_md5(sUser+sPwd);sPwd=hex_md5(sPwd+'{$RAND_NUM}');$('#PASSWORD').val(sPwd);";
@@ -60,6 +60,7 @@ class IndexController extends Controller
             self.focus();
         </script>
 eof;
+        $languages = SysLang::all();
         $HtmlData = array(
             "title" =>$APP_TITLE,
             "javascript"=>$JAVA_SCRIPT,
@@ -74,7 +75,7 @@ eof;
             "lg_username"=>__('messages.lg_username'),
             "lg_password"=>__('messages.lg_password'),
             "lg_login"=>__('messages.lg_login'),
-            "langID"=>$langID,
+            "languages"=>$languages,
             'script'=>$script,
         );
 
@@ -109,6 +110,70 @@ eof;
         return view('index',$HtmlData);
     }
 
+    public function Login(Request $request){
+        $res = $this->user->where('Code','admin')->get();
+        dd($res[0]->Code);
+        $USER_NAME = $request->input('USERNAME');
+        $PASS_WORD = $request->input('PASSWORD');
+        $CUR_TIME = date("Y-m-d H:i:s",time());
+        $USER_NAME = trim($USER_NAME);
+        $this->useronline->clearOnlineStatus();
+        
+        if ($this->useronline->checkOnlineStatus($USER_NAME))
+        {
+            $RAND_NUM = Session::get('LG_RAND');
+            $LOGIN_MSG = $this->user->checkLogin($USER_NAME,$PASS_WORD,$RAND_NUM);
+            /*if ($LOGIN_MSG==0 && $User->IpLimit == "Y")
+            {
+                $branchClient = TBranchClient::getInstance();
+                if (!$branchClient->loadEx($clientIP,"Y","BranchCode"))
+                {
+                    $LOGIN_MSG = -2107;
+                    return ;
+                }
+                //Try to change the department
+                if ($User->AutoDept == "Y")
+                {
+                    $branch = TBranch::getInstance();
+                    if (!$branch->loadEx($branchClient->BranchCode,"DeptCode"))
+                    {
+                        $LOGIN_MSG = -2107;
+                        return;
+                    }
+                    $User->refreshDept($User->Code,$branch->DeptCode);
+                    //reload the details for user
+                    $User->Load($User->Code);
+                }
+        
+                $branchClient->refreshVisitor($clientIP,$User->Code);
+        
+            }
+            */
+            if ($LOGIN_MSG==0)
+            {
+                return "okok";
+                //取得用户所在售电点
+               /* $branch = TBranch::getInstance();
+                $branchCode = $branch->getCodeByDept($User->DeptID);
+                if ($branchCode=="")
+                    $branchCode = $branch->getCodeByDept($User->AdminDept);
+                $_SESSION["LG_BRNACH"] = $branchCode;
+                */
+                //...
+            }
+        }
+        else
+        {/*
+            $LOGIN_MSG = -2108;
+            $event = Event::getInstance();
+            if ($event->LoadByUser($USERNAME,"IP,EventTime"))
+            {
+                $event->msgItem["IP"] = $event->IP;
+                $event->msgItem["TIME"] = $event->EventTime;
+            }
+        */
+        }
+    }
     public function getUser(){
         return "okok";
         $data = User::all();

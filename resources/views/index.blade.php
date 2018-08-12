@@ -12,10 +12,13 @@
 
 <body onload="javascript:document.form1.{{$focus_filed}}".focus();">
 <div align="center">
-    <form name="form1" method="post" action="checkin.php" {{!!$autocomplete!!}} onsubmit="{{$form_submit}}">
+    <form name="form1" method="post" action="{{url('checkin')}}" {{!!$autocomplete!!}} onsubmit="{{$form_submit}}">
         {{ csrf_field() }}
         <div id="languages_block_top" style="margin-top:355px;">
-            <ul id="first-languages"><li ><a href="/{{$langID}}" title="" ><img src="{{asset('smart/images/l')}}/{{$langID}}.jpg" alt="{{$langID}}" width="16" height="11"/></a></li>
+            <ul id="first-languages">
+                @foreach($languages as $item)
+                <li ><a href="/{{$item->id_lang}}" title="" ><img src="{{asset('smart/images/l')}}/{{$item->id_lang}}.jpg" alt="{{$item->name}}" width="16" height="11"/></a></li>
+                @endforeach
             </ul>
         </div><br/>
         <div class="login_div" align="center" style="margin-top: 15px;">
