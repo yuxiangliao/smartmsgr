@@ -17,7 +17,7 @@
     @if($LastVisitTime=="")
         {{__('messages.SysNotUsed')}}<br/>
     @else
-        {{__('messages.LastUsedTime')}}:{{$lastTime}}<br/>
+        {{__('messages.LastUsedTime')}}:{{$LastVisitTime}}<br/>
     @endif
 
     {{__('messages.CurrTimeIs')}}:<br>

@@ -25,7 +25,7 @@ class User extends Model
 
     //主键不是自增模式
     public $incrementing = false;
-    public $Code;
+    /*public $Code;
     public $Name;
     public $Description;
     public $PWD;
@@ -46,7 +46,7 @@ class User extends Model
     public $IpAddress;
     public $AutoDept;
     public $AccBalance;
-    public $IsVender;
+    public $IsVender;*/
 
     public function reset()
     {
@@ -61,19 +61,16 @@ class User extends Model
 
     protected function getRecord($result)
     {
-        if (!$result)
-        {
-            $this->reset();
-            return false;
-        }
-        foreach ($result AS $key => $value)
-        {
-            if (key_exists($key, $result))
-            {
-                $this->{$key} = stripslashes($value);
-            }
-        }
+        $this->attributes = $result->attributes;
         return true;
+    }
+    
+    public function loadbyCode($userCode,$field='*')
+    {
+        $result = $this->where('Code','=',$userCode)->get([$field]);
+        if($result->isEmpty())
+            return false;
+        return $this->getRecord($result[0]);
     }
     
     public function checkLogin($userCode,$password,$randNum="",$times=0)
@@ -100,15 +97,14 @@ class User extends Model
             if ($loginTimes >= $SEC_RETRY_TIMES)
                 return -2103;
         }*/
-        $result = $this->where('Code','=',$userCode)->get();
-        if ($result->isEmpty())
+        
+        if (!$this->loadbyCode($userCode))
         {
             //Event::addEvent($userCode,2,"USERNAME=($userCode)");
             return -2104;//"the user name entered is incorrect!";
         }
-        $this->getRecord($result);
-        dd($result[0]);
-        if ($result[0]->NotLogin!="N")
+        
+        if ($this->NotLogin!="N")
         {
             return -2105;
         }
@@ -116,7 +112,7 @@ class User extends Model
         $PWD = "";
         if ($times>0)
         {
-            $PWD = $result[0]->PWD;
+            $PWD = $this->PWD;
             for ($i=1;$i<$times;$i++)
             {
                 $PWD = md5($PWD.$randNum);
@@ -124,7 +120,7 @@ class User extends Model
         }
         else
         {
-            $PWD = md5($result[0]->PWD.$randNum);
+            $PWD = md5($this->PWD.$randNum);
         }
         
         if($password != $PWD)

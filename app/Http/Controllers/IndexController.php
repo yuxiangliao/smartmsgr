@@ -83,8 +83,6 @@ eof;
             "languages"=>$languages,
             'script'=>$script,
         );
-
-
 /*
         $ANTIVIRUS_SCRIPT = file_get_contents( $ROOT_PATH."/include/antivirus.txt" );
 
@@ -110,11 +108,9 @@ eof;
         $OUTPUT_HTML = str_replace( array("{title}","{javascript}","{focus_filed}","{autocomplete}","{form_submit}","{logo_img}","{username_cookie}","{ui}","{antivirus_script}","{tips}","{lg_username}","{lg_password}","{lg_login}","{language}"),array($APP_TITLE,$JAVA_SCRIPT,$FOCUS,$AUTOCOMPLETE,$ON_SUBMIT,$LOGO_IMG,$USER_NAME_COOKIE,$UI_SELECT,$ANTIVIRUS_SCRIPT,$TIPS,$LG_COMMON['username'],$LG_COMMON['userpass'],$LG_COMMON['login'],$LANGUAGES), $OUTPUT_HTML );
 
         echo $OUTPUT_HTML;*/
-
-
         return view('index',$HtmlData);
     }
-
+    
     public function Login(Request $request){
         $res = $this->user->where('Code','admin')->get();
         $USER_NAME = $request->input('USERNAME');
@@ -160,7 +156,6 @@ eof;
                 if ($branchCode=="")
                     $branchCode = $this->branch->getCodeByDept($this->user->AdminDept);
                 Session::put("LG_BRNACH",$branchCode);
-
             }
         }
         else
