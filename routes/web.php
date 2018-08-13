@@ -12,7 +12,7 @@
 */
 
 //Route::get('/','IndexController@Index');
-Route::get('/{langID}','IndexController@Index');
+Route::get('/{langID?}','IndexController@Index');
 Route::get('/user','IndexController@getUser');
 Route::post('/checkin','IndexController@Login');
 Route::get('/lang/{lang}',function ($lang){

@@ -12,7 +12,7 @@
 
 <body onload="javascript:document.form1.{{$focus_filed}}".focus();">
 <div align="center">
-    <form name="form1" method="post" action="{{url('checkin')}}" {{!!$autocomplete!!}} onsubmit="{{$form_submit}}">
+    <form name="form1" method="post" action="{{url('checkin')}}" {!!$autocomplete!!} onsubmit="{{$form_submit}}">
         {{ csrf_field() }}
         <div id="languages_block_top" style="margin-top:355px;">
             <ul id="first-languages">

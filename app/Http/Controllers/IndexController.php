@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\UserOnline;
 use Illuminate\Http\Request;
 use App\Models\Dictionary;
+use App\Models\Branch;
+
 use Illuminate\Support\Facades\Session;
 
 class IndexController extends Controller
@@ -14,15 +16,18 @@ class IndexController extends Controller
     private $dictionary;
     private $useronline;
     private $user;
+    private $branch;
+
     public function __construct(Dictionary $dictionary,
-        UserOnline $useronline,User $user)
+        UserOnline $useronline,User $user,Branch $branch)
     {
         $this->dictionary = $dictionary;
         $this->useronline = $useronline;
         $this->user = $user;
+        $this->branch = $branch;
     }
     
-    public function Index(Request $request,$langID){
+    public function Index(Request $request,$langID=1){
         $RAND_NUM = rand();
         $RAND_NUM = md5($RAND_NUM);
         $request->session()->put("LG_RAND",$RAND_NUM);
@@ -112,13 +117,13 @@ eof;
 
     public function Login(Request $request){
         $res = $this->user->where('Code','admin')->get();
-        dd($res[0]->Code);
         $USER_NAME = $request->input('USERNAME');
         $PASS_WORD = $request->input('PASSWORD');
         $CUR_TIME = date("Y-m-d H:i:s",time());
         $USER_NAME = trim($USER_NAME);
         $this->useronline->clearOnlineStatus();
-        
+        $LOGIN_MSG='';
+        $loginError='';
         if ($this->useronline->checkOnlineStatus($USER_NAME))
         {
             $RAND_NUM = Session::get('LG_RAND');
@@ -150,16 +155,12 @@ eof;
             }
             */
             if ($LOGIN_MSG==0)
-            {
-                return "okok";
-                //取得用户所在售电点
-               /* $branch = TBranch::getInstance();
-                $branchCode = $branch->getCodeByDept($User->DeptID);
+            {//取得用户所在售电点
+                $branchCode = $this->branch->getCodeByDept($this->user->DeptID);
                 if ($branchCode=="")
-                    $branchCode = $branch->getCodeByDept($User->AdminDept);
-                $_SESSION["LG_BRNACH"] = $branchCode;
-                */
-                //...
+                    $branchCode = $this->branch->getCodeByDept($this->user->AdminDept);
+                Session::put("LG_BRNACH",$branchCode);
+
             }
         }
         else
@@ -172,10 +173,29 @@ eof;
                 $event->msgItem["TIME"] = $event->EventTime;
             }
         */
+            $LOGIN_MSG = -2108;
+            $loginError = \Tool::getMessageBox(__('messages.LoginFailed'),$LOGIN_MSG,"error");
         }
+        list($CUR_YEAR,$CUR_MON,$CUR_DAY,$CUR_HOUR,$CUR_MINITE,$CUR_SECOND) = \Tool::DateTimeEx(hexdec(dechex(time())));
+        $TIME_STR="$CUR_YEAR,$CUR_MON-1,$CUR_DAY,$CUR_HOUR,$CUR_MINITE,$CUR_SECOND";
+        $MessageBox = \Tool::getMessageBox(__('messages.ConfirmTime') ,$LOGIN_MSG,"info");
+        return view('confirm',[
+            'LOGIN_MSG' => $LOGIN_MSG,
+            'CUR_YEAR' => $CUR_YEAR,
+            'CUR_MON' => $CUR_MON,
+            'CUR_DAY' => $CUR_DAY,
+            'CUR_HOUR' => $CUR_HOUR,
+            'CUR_MINITE' => $CUR_MINITE,
+            'CUR_SECOND' => $CUR_SECOND,
+            'TIME_STR' => $TIME_STR,
+            'loginError' =>$loginError,
+            'MessageBox' => $MessageBox,
+            'VA_UI' => "general/mainframe.php",
+            'LastVisitTime'=>$this->user->LastVisitTime,
+            'Weeks'=>\Tool::getWeek(),
+        ]);
     }
     public function getUser(){
-        return "okok";
         $data = User::all();
         foreach ($data as $row){
             dd($row->Code);

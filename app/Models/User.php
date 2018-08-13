@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
-class User extends Authenticatable
+class User extends Model
 {
-    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +25,56 @@ class User extends Authenticatable
 
     //主键不是自增模式
     public $incrementing = false;
+    public $Code;
+    public $Name;
+    public $Description;
+    public $PWD;
+    public $PWDExpiry;
+    public $RoleID;
+    public $RoleIDOthers;
+    public $LastVisitTime;
+    public $DeptID;
+    public $DeptIDOthers;
+    public $NotLogin;
+    public $NotViewUser;
+    public $Theme;
+    public $AdminDept;
+    public $CurrStatus;
+    public $SessionNo;
+    public $SessionDate;
+    public $IpLimit;
+    public $IpAddress;
+    public $AutoDept;
+    public $AccBalance;
+    public $IsVender;
+
+    public function reset()
+    {
+        foreach ($this AS $key => $value)
+        {
+            if (key_exists($key, $this))
+            {
+                $this->{$key} = "";
+            }
+        }
+    }
+
+    protected function getRecord($result)
+    {
+        if (!$result)
+        {
+            $this->reset();
+            return false;
+        }
+        foreach ($result AS $key => $value)
+        {
+            if (key_exists($key, $result))
+            {
+                $this->{$key} = stripslashes($value);
+            }
+        }
+        return true;
+    }
     
     public function checkLogin($userCode,$password,$randNum="",$times=0)
     {
@@ -53,10 +104,10 @@ class User extends Authenticatable
         if ($result->isEmpty())
         {
             //Event::addEvent($userCode,2,"USERNAME=($userCode)");
-            //return -2104;//"the user name entered is incorrect!";
+            return -2104;//"the user name entered is incorrect!";
         }
-        
-        
+        $this->getRecord($result);
+        dd($result[0]);
         if ($result[0]->NotLogin!="N")
         {
             return -2105;
@@ -73,7 +124,6 @@ class User extends Authenticatable
         }
         else
         {
-            
             $PWD = md5($result[0]->PWD.$randNum);
         }
         

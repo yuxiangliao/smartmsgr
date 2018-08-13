@@ -13,4 +13,5 @@ return [
     '_IM_DOWNLOAD_DIR_'=> base_path().'/download/',
     '_IM_INC_DIR_' =>  base_path().'/include/',
     '_IM_ATTACH_DIR_' =>base_path().'/attachment/',
+    '_PAGE_NAME_'=>"forms",
 ];
