@@ -9,44 +9,13 @@ use Illuminate\Support\Facades\DB;
 
 class User extends Model
 {
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $table='sys_user';
     //主键
     protected $primaryKey='Code';
-
     public $timestamps = false;
-
     protected $guarded=[];
-
     //主键不是自增模式
     public $incrementing = false;
-    /*public $Code;
-    public $Name;
-    public $Description;
-    public $PWD;
-    public $PWDExpiry;
-    public $RoleID;
-    public $RoleIDOthers;
-    public $LastVisitTime;
-    public $DeptID;
-    public $DeptIDOthers;
-    public $NotLogin;
-    public $NotViewUser;
-    public $Theme;
-    public $AdminDept;
-    public $CurrStatus;
-    public $SessionNo;
-    public $SessionDate;
-    public $IpLimit;
-    public $IpAddress;
-    public $AutoDept;
-    public $AccBalance;
-    public $IsVender;*/
 
     public function reset()
     {
@@ -97,13 +66,13 @@ class User extends Model
             if ($loginTimes >= $SEC_RETRY_TIMES)
                 return -2103;
         }*/
-        
+
         if (!$this->loadbyCode($userCode))
         {
             //Event::addEvent($userCode,2,"USERNAME=($userCode)");
             return -2104;//"the user name entered is incorrect!";
         }
-        
+
         if ($this->NotLogin!="N")
         {
             return -2105;

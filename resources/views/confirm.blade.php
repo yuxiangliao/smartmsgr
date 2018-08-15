@@ -1,4 +1,3 @@
-<!doctype html>
 <html>
 <head>
     <title>Login the system</title>
@@ -7,34 +6,17 @@
     <link rel="shortcut icon" href="smart/images/inhe.ico"/>
 </head>
 <body topmargin="5">
-<br/><br/>
-{{$LOGIN_MSG}}
+<br><br>
 @if($LOGIN_MSG != 0)
-    {{$loginError}}
-    <div align="center"><input type="button" value="{{__('messages.Relogin')}}" class="BigButton" onclick="location='/'"/></div>
+    {!! $loginError !!}
+    <div align="center">
+        <input type="button" value="{{__('messages.Relogin')}}" class="BigButton" onclick="location='/'"/>
+    </div>
 
 @else
-    @if($LastVisitTime=="")
-        {{__('messages.SysNotUsed')}}<br/>
-    @else
-        {{__('messages.LastUsedTime')}}:{{$LastVisitTime}}<br/>
-    @endif
-
-    {{__('messages.CurrTimeIs')}}:<br>
-
-
-    <div id="banner_time" style='color: #FF0000;' align="center">
-    <span class="time_left">
-        <span class="time_right">
-            <span id='header_date' title=''></span>&nbsp;&nbsp;&nbsp;
-            <span id="header_time">20:19:10</span>&nbsp&nbsp;&nbsp;
-            <b>{{$Weeks}}</b>
-        </span>
-    </span>
-    </div>
     <div align="center">
         {!! $MessageBox !!}
-        <div align="center\">
+        <div align="center">
             <input type="button" value="{{__('messages.EnterSystem')}}" class="BigButton" onclick="goto_va();"/>&nbsp;&nbsp;
             <input type="button" value="{{__('messages.Return')}}" class="BigButton" onclick="location='/'"/>
         </div>
@@ -68,3 +50,4 @@
     </script>
 @endif
 </body>
+</html>

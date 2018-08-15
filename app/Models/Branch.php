@@ -14,8 +14,10 @@ class Branch extends Model
 
     protected $guarded=[];
 
+    public $incrementing = false;
+
     public function getCodeByDept($deptID){
-        $res = $this->where('DeptCode',$deptID)->first(['Code']);
+        $res = $this->where('DeptCode','=',$deptID)->first();
         return $res->Code;
     }
 }

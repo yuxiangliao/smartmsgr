@@ -19,4 +19,5 @@ return [
     "CurrTimeIs"=>"The current system time is",
     "ConfirmTime" =>"Confirmation Time",
     "Monday" => "Monday",
+    "Tuesday" => "Tuesday",
 ];

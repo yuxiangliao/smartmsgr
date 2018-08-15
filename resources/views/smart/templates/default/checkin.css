@@ -13,11 +13,11 @@ input.BigButton:hover{color:#FFFFFF;background-position:0 -24px;font-size:13px;}
 
 
 .big1   { font-size: 12pt;COLOR: #000000;}
-/* ÌáÊ¾¿òÑùÊ½ */
+/* ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ê½ */
 .MessageBox{
    height:90px;
    border:1px #83ACCF dotted;
-   background:url("/images/white_bg.png");
+   background:url("/smart/images/white_bg.png");
    margin-top:15px;
    margin-bottom:15px;
 }
@@ -36,23 +36,23 @@ input.BigButton:hover{color:#FFFFFF;background-position:0 -24px;font-size:13px;}
    border:none;
 }
 .MessageBox td.error{
-   background:url("/images/icon64_error.png") no-repeat top left;
+   background:url("/smart/images/icon64_error.png") no-repeat top left;
    background-position:10px 10px;
 }
 .MessageBox td.info{
-   background:url("/images/icon64_info.png") no-repeat top left;
+   background:url("/smart/images/icon64_info.png") no-repeat top left;
    background-position:10px 10px;
 }
 .MessageBox td.warning{
-   background:url("/images/icon64_warning.png") no-repeat top left;
+   background:url("/smart/images/icon64_warning.png") no-repeat top left;
    background-position:10px 10px;
 }
 .MessageBox td.forbidden{
-   background:url("/images/icon64_forbidden.png") no-repeat top left;
+   background:url("/smart/images/icon64_forbidden.png") no-repeat top left;
    background-position:10px 10px;
 }
 .MessageBox td.stop{
-   background:url("/images/icon64_stop.png") no-repeat top left;
+   background:url("/smart/images/icon64_stop.png") no-repeat top left;
    background-position:10px 10px;
 }
 .MessageBox td.blank{

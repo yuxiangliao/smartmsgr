@@ -124,9 +124,9 @@ eof;
         {
             $RAND_NUM = Session::get('LG_RAND');
             $LOGIN_MSG = $this->user->checkLogin($USER_NAME,$PASS_WORD,$RAND_NUM);
-            /*if ($LOGIN_MSG==0 && $User->IpLimit == "Y")
+            if ($LOGIN_MSG==0 && $this->user->IpLimit == "Y")
             {
-                $branchClient = TBranchClient::getInstance();
+                /*$branchClient = TBranchClient::getInstance();
                 if (!$branchClient->loadEx($clientIP,"Y","BranchCode"))
                 {
                     $LOGIN_MSG = -2107;
@@ -146,10 +146,10 @@ eof;
                     $User->Load($User->Code);
                 }
         
-                $branchClient->refreshVisitor($clientIP,$User->Code);
+                $branchClient->refreshVisitor($clientIP,$User->Code);*/
         
             }
-            */
+
             if ($LOGIN_MSG==0)
             {//取得用户所在售电点
                 $branchCode = $this->branch->getCodeByDept($this->user->DeptID);
@@ -171,9 +171,27 @@ eof;
             $LOGIN_MSG = -2108;
             $loginError = \Tool::getMessageBox(__('messages.LoginFailed'),$LOGIN_MSG,"error");
         }
+
         list($CUR_YEAR,$CUR_MON,$CUR_DAY,$CUR_HOUR,$CUR_MINITE,$CUR_SECOND) = \Tool::DateTimeEx(hexdec(dechex(time())));
         $TIME_STR="$CUR_YEAR,$CUR_MON-1,$CUR_DAY,$CUR_HOUR,$CUR_MINITE,$CUR_SECOND";
-        $MessageBox = \Tool::getMessageBox(__('messages.ConfirmTime') ,$LOGIN_MSG,"info");
+
+        $lastTime = $this->user->LastVisitTime;//TEventTime::getInstance()->getLastTime();
+        if ($lastTime=="")
+            $MSG = __('messages.SysNotUsed')."<br> ";
+        else
+            $MSG = __('messages.LastUsedTime').": {$lastTime} .<br> ";
+
+        $MSG .= __('messages.CurrTimeIs').":<br> ";
+
+        $MSG .= "<div id=\"banner_time\" style='color: #FF0000;' align=\"center\"><span class=\"time_left\">";
+        $MSG .= "<span class=\"time_right\">";
+        $MSG .= "<span id='header_date' title=''></span>&nbsp;&nbsp;&nbsp;";
+        $MSG .= "<span id=\"header_time\">20:19:10</span>&nbsp&nbsp;&nbsp;<b>";
+        $MSG .= \Tool::getWeek();
+        $MSG .= "</b></span></span>";
+        $MSG .= " </div>";
+        $MessageBox = \Tool::getMessageBox(__('messages.ConfirmTime') ,$MSG,"info");
+
         return view('confirm',[
             'LOGIN_MSG' => $LOGIN_MSG,
             'CUR_YEAR' => $CUR_YEAR,
@@ -185,10 +203,57 @@ eof;
             'TIME_STR' => $TIME_STR,
             'loginError' =>$loginError,
             'MessageBox' => $MessageBox,
-            'VA_UI' => "general/mainframe.php",
+            'VA_UI' => "general/mainframe",
             'LastVisitTime'=>$this->user->LastVisitTime,
             'Weeks'=>\Tool::getWeek(),
         ]);
+    }
+
+    public function main(Request $request){
+        $checkLicence = false;
+        include_once("include/auth.php");
+
+        $Dictionary = TDictionary::getInstance();
+        $result = $Dictionary->loadDictionaries("INTERFACE","","'APP_TITLE'");
+        foreach ($result as $row)
+        {
+            $$row['Code'] = $row['Description'];
+        }
+
+//    session_start();
+        ob_start();
+
+        $CURR_THEME = $_SESSION["LG_THEME"];
+        $CURR_THEME = $CURR_THEME==""?"1":$CURR_THEME;
+//**********************add by cz
+        $User = TUser::getInstance();
+        $operacode = $User->currentUser();
+        $User->loadEx($operacode);
+//**********************add by cz 150325 ¿ØÖÆÐÞ¸ÄÃÜÂë
+        $PWD = md5(strtoupper($operacode));
+        if ($User->PWD==$PWD)
+        {
+            $URL = "forms.php?a=public/pswd.php&actype=0";
+            Header("Location: $URL");
+            exit;
+        }
+
+        $Dictionary = TDictionary::getInstance();
+        $result = $Dictionary->loadDictionaries("SYS_PARAM","","'PWDEXPIRY'");
+        foreach ($result as $row)
+        {
+            $$row['Code'] = $row['V2'];
+        }
+
+        if ($PWDEXPIRY !="" && $PWDEXPIRY !="0")
+        {
+            if (!TDateTime::daysBetween($User->PWDExpiry,$PWDEXPIRY))
+            {
+                $URL = "forms.php?a=public/pswd.php&actype=1";
+                Header("Location: $URL");
+                exit;
+            }
+        }
     }
     public function getUser(){
         $data = User::all();
