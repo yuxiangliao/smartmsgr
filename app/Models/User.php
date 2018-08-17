@@ -17,17 +17,6 @@ class User extends Model
     //主键不是自增模式
     public $incrementing = false;
 
-    public function reset()
-    {
-        foreach ($this AS $key => $value)
-        {
-            if (key_exists($key, $this))
-            {
-                $this->{$key} = "";
-            }
-        }
-    }
-
     protected function getRecord($result)
     {
         $this->attributes = $result->attributes;
@@ -107,6 +96,6 @@ class User extends Model
         }*/
         return 0;
     }
-    
+
     
 }

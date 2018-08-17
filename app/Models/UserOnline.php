@@ -74,4 +74,31 @@ class UserOnline extends Model
         }
         return true;
     }
+
+    public function refreshOnlineStatus($userCode,$currTime,$currSID)
+    {
+        if (defined('_SESSION_DB_'))
+        {
+            // $query = "UPDATE sys_sessions SET session_expires='{$currTime}',session_user='$userCode' WHERE session='{$currSID}'";
+            // Db::getInstance()->Execute($query);
+        }
+        else
+        {
+            $where = "";
+            $where = parent::createWhere($where,"UCode","'".$userCode."'","=","_");
+            $query = "UPDATE {$this->table} SET LoginTime=?,SID=? ".$where;
+            $num = DB::update($query,[$currTime,$currSID]);
+
+            if ($num== 0)
+            {
+                $where = parent::createWhere($where,"UCode","''","=","_","or");
+                $query = "DELETE FROM {$this->table} $where";
+                DB::delete($query);
+
+                $query = "INSERT INTO {$this->table} VALUES(?,?,?)";
+                DB::insert($query,[$userCode,$currTime,$currSID]);
+            }
+        }
+    }
+
 }

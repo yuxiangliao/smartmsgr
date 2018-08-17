@@ -210,7 +210,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Tool'=>App\Facades\ToolFacade::class,
-
+        'TDateTime'=>App\Facades\DateTimeFacade::class,
     ],
 
 ];

@@ -2,8 +2,8 @@
 <head>
     <title>Login the system</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="smart/templates/default/checkin.css"/>
-    <link rel="shortcut icon" href="smart/images/inhe.ico"/>
+    <link rel="stylesheet" type="text/css" href="./smart/templates/default/checkin.css"/>
+    <link rel="shortcut icon" href="/smart/images/inhe.ico"/>
 </head>
 <body topmargin="5">
 <br><br>

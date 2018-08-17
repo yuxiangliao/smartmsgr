@@ -17,6 +17,19 @@ class Tools
     public function get(){
         return 'hello facade';
     }
+
+    public function findIDEx($STRING, $ID)
+    {
+        $ID = "[{$ID}]";
+        if ( strpos( $STRING, $ID )===False )
+        {
+            return False;
+        }
+        else
+            return True;
+
+    }
+
     public function getMessageBox($TITLE,$CONTENT,$STYLE="")
     {
         $WIDTH = strlen($CONTENT)*10 + 140;
