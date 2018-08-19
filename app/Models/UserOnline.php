@@ -85,13 +85,13 @@ class UserOnline extends Model
         else
         {
             $where = "";
-            $where = parent::createWhere($where,"UCode","'".$userCode."'","=","_");
+            $where = \Tool::createWhere($where,"UCode","'".$userCode."'","=","_");
             $query = "UPDATE {$this->table} SET LoginTime=?,SID=? ".$where;
             $num = DB::update($query,[$currTime,$currSID]);
 
             if ($num== 0)
             {
-                $where = parent::createWhere($where,"UCode","''","=","_","or");
+                $where = \Tool::createWhere($where,"UCode","''","=","_","or");
                 $query = "DELETE FROM {$this->table} $where";
                 DB::delete($query);
 

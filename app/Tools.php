@@ -132,4 +132,20 @@ class Tools
                 return __('messages.Saturday');
         }
     }
+    
+    public function createWhere($where,$fieldName,$fieldValue,$condition,$value,$addWhere=true,$symbol="AND")
+    {
+        if ($value=="")
+            return $where;
+        if ($where=="")
+        {
+            if ($addWhere)
+                $where = " WHERE ";
+            $where .= " ({$fieldName} {$condition} {$fieldValue}) ";
+        }
+        else
+            $where .= " {$symbol} ({$fieldName} {$condition} {$fieldValue}) ";
+        
+        return $where;
+    }
 }

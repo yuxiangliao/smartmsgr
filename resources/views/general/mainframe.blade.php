@@ -84,8 +84,8 @@
             <div id="test12" region="center" border="false" style="padding:1px;background:#fff;border:0px solid #ccc;">
             </div>
             <div region="south" border="false" style="text-align:right;height:30px;line-height:30px; padding-top:3px;">
-                <a id="btndialog_ok" class="easyui-linkbutton" iconCls="icon-ok" href="javascript:void(0)" ><?=$LG_COMMON['cliOK']?></a>
-                <a id="btndialog_cancel" class="easyui-linkbutton" iconCls="icon-cancel" href="javascript:void(0)" ><?=$LG_COMMON['cliCancel']?></a>
+                <a id="btndialog_ok" class="easyui-linkbutton" iconCls="icon-ok" href="javascript:void(0)" >{{__("messages.cliOK")}}</a>
+                <a id="btndialog_cancel" class="easyui-linkbutton" iconCls="icon-cancel" href="javascript:void(0)" >{{__("messages.cliCancel")}}</a>
             </div>
         </div>
     </div>
@@ -125,6 +125,6 @@
     </script>
 
     <iframe id="mainframe" frameborder="0" scrolling="no"  src="default.php" width="100%" height="100%"></a>
-</div>
+    </iframe></div>
 </body>
 </html>

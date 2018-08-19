@@ -270,14 +270,15 @@ eof;
     public function main(Request $request){
         $checkLicence = false;
         //include_once("include/auth.php");
-        if ($iso = Tools::getValue('isolang') AND Validate::isLanguageIsoCode($iso) AND ($id_lang = intval(Language::getIdByIso($iso))))
+        /*if ($iso = \Tool::getValue('isolang') AND Validate::isLanguageIsoCode($iso) AND ($id_lang = intval(Language::getIdByIso($iso))))
         {
             $_GET['id_lang'] = $id_lang;
-        }
-        $result = $this->dictionary->loadDictionaries("INTERFACE","","'APP_TITLE'");
+        }*/
+        $result = $this->dictionary->loadDictionaries("INTERFACE","","APP_TITLE");
         foreach ($result as $row)
         {
             ${$row['Code']} = $row['Description'];
+            //dd(${$row['Code']});
         }
 
 
@@ -293,20 +294,23 @@ eof;
            return view("general.public.pswd");
         }
 
-        $result = $this->dictionary->loadDictionaries("SYS_PARAM","","'PWDEXPIRY'");
+        $result = $this->dictionary->loadDictionaries("SYS_PARAM","","PWDEXPIRY");
         foreach ($result as $row)
         {
             ${$row['Code']} = $row['V2'];
         }
 
-        if ($PWDEXPIRY !="" && $PWDEXPIRY !="0")
+        if (isset($PWDEXPIRY) && ($PWDEXPIRY !="") && ($PWDEXPIRY !="0"))
         {
             if (!\TDateTime::daysBetween($this->user->PWDExpiry,$PWDEXPIRY))
             {
                 return view('general.public.pswd');
             }
         }
-        return view('general.mainframe');
+        return view('general.mainframe',[
+            'APP_TITLE' => $APP_TITLE,
+            'CURR_THEME'=>'1',
+        ]);
     }
 
     public function deaultPage(SysLang $lang){

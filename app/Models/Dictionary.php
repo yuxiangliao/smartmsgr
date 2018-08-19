@@ -26,7 +26,9 @@ class Dictionary extends Model
             $where['ParentCode'] = $parent_code;
         if($code!="")
             $where['Code'] = $code;
-
-        return $this->where($where)->get([$fields]);
+        DB::enableQueryLog();
+        $res = $this->where($where)->get([$fields]);
+        //dd(DB::getQueryLog());
+        return $res;
     }
 }
