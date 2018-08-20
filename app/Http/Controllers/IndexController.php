@@ -313,10 +313,10 @@ eof;
         ]);
     }
 
-    public function deaultPage(SysLang $lang){
+    public function default(SysLang $lang){
         $checkLicence = false;
 
-        $result = $this->dictionary->loadDictionaries("INTERFACE","","'APP_TITLE'");
+        $result = $this->dictionary->loadDictionaries("INTERFACE","","APP_TITLE");
         foreach ($result as $row)
         {
             ${$row['Code']} = $row['Description'];
@@ -327,5 +327,75 @@ eof;
             'iso' =>$iso,
         ]);
 
+    }
+    
+    public function form(Request $request,$a){
+        $act = strtolower($a);
+        $LANG_MODULES = array('function');
+        //('config/config.inc.php');
+        //include_once('init.php');
+    
+        $CURR_THEME = $request->session("LG_THEME");
+        $CURR_THEME = $CURR_THEME==""?"1":$CURR_THEME;
+    
+        $actArray = array(
+            "nav_menu" => array("URL"=>"navigator/menu.php" ,"BODYCLS"=>"leftmenubody"),
+            "nav_header" => array("URL"=>"navigator/header.php" ,"BODYCLS"=>"headerbody"),
+            "nav_shortcut" => array("URL"=>"navigator/shortcut.php" ,"BODYCLS"=>"shortcutbody"),
+            "nav_statusbar" => array("URL"=>"navigator/statusbar.php" ,"BODYCLS"=>"statusbar"),
+            "nav_desktop" => array("URL"=>"desktop/main.php" ,"BODYCLS"=>"tablebody"),
+        );
+    
+        include_once(config("settings._IM_INC_DIR_")."sys_function_a.php");
+    
+        $title = "";
+        $titleImg = "/images/outbox.gif";
+        if (isset($hideTitle))
+        {
+            $showTitle = "N";
+            $bodyClass = "";
+        }
+        else
+        {
+            $showTitle = "Y";
+            $bodyClass = "mainbody";
+        }
+        $resizeBody = true;
+    
+        if (array_key_exists($act,$actArray))
+        {
+            $bodyClass = $actArray[$act]['BODYCLS'];
+            if ($bodyClass=="")
+                $bodyClass = "mainbody";
+            $showTitle = "N";
+            $resizeBody = false;
+            $act = $actArray[$act]['URL'];
+        }
+        else
+            if (array_key_exists($act,$SYS_FUNCTIONS_A))
+            {
+                if ($showTitle=="Y")
+                {
+                    $title = $SYS_FUNCTIONS_A[$act]['LANG_ID'];
+                    //$title = $LG_FUNC[$title.'T'];
+                    if ($title=="")
+                        $title = $SYS_FUNCTIONS_A[$act]['DESCRIPTION'];
+                    if ($SYS_FUNCTIONS_A[$act]['IMAGE'] !="")
+                        $titleImg = "/images/menu/".$SYS_FUNCTIONS_A[$act]['IMAGE']."gif";
+                }
+                $CURR_MODULE_ID = $SYS_FUNCTIONS_A[$act]['ID'];
+            }
+        $actURL = $act;
+        $params = \Tool::getArgsStr("a");
+        if ($params != "")
+            $actURL .="?".$params;
+        return view('general.form',[
+            'resizeBody'=>$resizeBody,
+            'act' => $act,
+            'bodyClass' => $bodyClass,
+            'CURR_MODULE_ID' => $CURR_MODULE_ID,
+            'module_action' => $SYS_FUNCTIONS_A[$act]['ID'],
+            '' => '',
+        ]);
     }
 }

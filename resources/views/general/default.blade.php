@@ -8,7 +8,7 @@
         {
 
            parent.globalClass.changeLanguage("{{$iso}}");
-     }
+        }
     </script>
     </head>
    <frameset rows="50,*,25"  cols="*" frameborder="no" border="0" framespacing="0" id="frame1">

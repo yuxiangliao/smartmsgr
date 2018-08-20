@@ -81,9 +81,9 @@ class Functions extends Model
         $cache1 ="<?\n\$SYS_FUNCTIONS = array(\n".substr($cache1,0,-2)."\n);\n?>";
         $cache2 ="<?\n\$SYS_FUNCTIONS = array(\n".substr($cache2,0,-2)."\n);\n?>";
         $cache3 ="<?\n\$SYS_FUNCTIONS_A = array(\n".substr($cache3,0,-2)."\n);\n?>";
-        $cache_file_1 =_IM_INC_DIR_."sys_function_all.php";
-        $cache_file_2 =_IM_INC_DIR_."sys_function.php";
-        $cache_file_3 =_IM_INC_DIR_."sys_function_a.php";
+        $cache_file_1 =config("settings._IM_INC_DIR_")."sys_function_all.php";
+        $cache_file_2 =config("settings._IM_INC_DIR_")."sys_function.php";
+        $cache_file_3 =config("settings._IM_INC_DIR_")."sys_function_a.php";
         if(!file_exists($cache_file_1) || is_writable($cache_file_1))
         {
 //            $cache1 = $cache1;//.utf8_encode($cache1);

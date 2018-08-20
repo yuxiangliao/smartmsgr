@@ -1,0 +1,5 @@
+<?
+$SYS_FUNCTIONS = array(
+
+);
+?>

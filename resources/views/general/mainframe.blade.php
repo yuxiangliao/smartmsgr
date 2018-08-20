@@ -124,7 +124,7 @@
 
     </script>
 
-    <iframe id="mainframe" frameborder="0" scrolling="no"  src="default.php" width="100%" height="100%"></a>
+    <iframe id="mainframe" frameborder="0" scrolling="no"  src="{{url("general/default")}}" width="100%" height="100%"></a>
     </iframe></div>
 </body>
 </html>

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Register;
+use App\Models\Functions;
 class LisenceMiddleware
 {
     /**
@@ -15,8 +16,8 @@ class LisenceMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $licence = $request->session("REG_INFO");
-        $regInfo = Register::getInstance();
+        //$licence = $request->session("REG_INFO");
+        //$regInfo = Register::getInstance();
         /*if ($licence==NULL)
         {
             //未验证
@@ -74,6 +75,13 @@ class LisenceMiddleware
             echo Tools::getMessageBox($LG_COMMON['infoWarn'],$LG_MSG['-90002']);
             exit;
         }*/
+        if(!file_exists(config("settings._IM_INC_DIR_")."sys_function.php"))
+        {
+            $funs  = new Functions();
+            $funs->generalCache();
+            include(config("settings._IM_INC_DIR_")."sys_function.php" );
+        
+        }
         return $next($request);
     }
 }

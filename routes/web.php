@@ -15,8 +15,10 @@
 Route::get('/{langID?}','IndexController@Index');
 Route::get('/user','IndexController@getUser');
 Route::post('/checkin','IndexController@Login');
-
-Route::any('/general/mainframe','IndexController@Main');
+Route::group(['middleware' => 'licence'], function (){
+    Route::any('/general/mainframe','IndexController@Main');
+    Route::any('/general/default','IndexController@default');
+});
 
 Route::get('/lang/{lang}',function ($lang){
     $curr_lang = App::getLocale();
