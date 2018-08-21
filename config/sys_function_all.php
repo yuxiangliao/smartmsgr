@@ -1,4 +1,4 @@
-<?
+<?php
 $SYS_FUNCTIONS = array(
    "S0" => array("ID" => "0","NAME" => "General","PID" => "","DESCRIPTION" => "General Information","TYPE" => "S","FUNC_NAME" => "","LANG_ID" => "VA","IMAGE" => "","OPEN_WIN" => "0","PARAMS" => "","ACTIONS" => "","LEVEL" => "0"),
    "M009" => array("ID" => "009","NAME" => "Base Information","PID" => "0","DESCRIPTION" => "Base Information","TYPE" => "M","FUNC_NAME" => "","LANG_ID" => "VA_BI","IMAGE" => "","OPEN_WIN" => "0","PARAMS" => "","ACTIONS" => "","LEVEL" => "1"),
@@ -36,5 +36,4 @@ $SYS_FUNCTIONS = array(
    "A15003" => array("ID" => "15003","NAME" => "SMS Sending","PID" => "150","DESCRIPTION" => "View the SMS Sending","TYPE" => "A","FUNC_NAME" => "sms/sendingbrowser.php","LANG_ID" => "VB_SMS_SEND","IMAGE" => "","OPEN_WIN" => "0","PARAMS" => "","ACTIONS" => "001,002","LEVEL" => "2"),
    "A15004" => array("ID" => "15004","NAME" => "SMS Sent","PID" => "150","DESCRIPTION" => "View the SMS Sent","TYPE" => "A","FUNC_NAME" => "sms/sentbrowser.php","LANG_ID" => "VB_SMS_SENT","IMAGE" => "","OPEN_WIN" => "0","PARAMS" => "","ACTIONS" => "001,002,003","LEVEL" => "2"),
    "A15005" => array("ID" => "15005","NAME" => "SMS Vending","PID" => "150","DESCRIPTION" => "View the SMS Vending","TYPE" => "A","FUNC_NAME" => "sms/vendbrowser.php","LANG_ID" => "VB_SMS_VEND","IMAGE" => "","OPEN_WIN" => "0","PARAMS" => "","ACTIONS" => "001,002,003","LEVEL" => "2")
-);
-?>
+);return $SYS_FUNCTIONS?>

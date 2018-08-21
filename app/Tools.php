@@ -11,13 +11,27 @@ class Tools
 {
     protected static $file_exists_cache = array();
 
-    /**
-     * 获取消息提示信息
-     */
-    public function get(){
-        return 'hello facade';
+    public function getArgsStr($exceptArgs)
+    {
+        $parameters = "";
+        foreach ($_GET as $key =>$value)
+        {
+            if ($key==$exceptArgs) continue;
+            if ($parameters=="")
+                $parameters .= $key."=".$_GET[$key];
+            else
+                $parameters .= "&".$key."=".$_GET[$key];
+        }
+        foreach ($_POST as $key => $value)
+        {
+            if ($key==$exceptArgs) continue;
+            if ($parameters=="")
+                $parameters .= $key."=".$value;
+            else
+                $parameters .= "&".$key."=".$value;
+        }
+        return $parameters;
     }
-
     public function findIDEx($STRING, $ID)
     {
         $ID = "[{$ID}]";

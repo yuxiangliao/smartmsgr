@@ -11,7 +11,7 @@ return [
     '_IM_CLASS_DIR_' => base_path().'/classes/',
     '_IM_LANG_DIR_'    => base_path().'/lang/',
     '_IM_DOWNLOAD_DIR_'=> base_path().'/download/',
-    '_IM_INC_DIR_' =>  base_path().'/include/',
+    '_IM_INC_DIR_' =>  base_path().'/config/',
     '_IM_ATTACH_DIR_' =>base_path().'/attachment/',
     '_PAGE_NAME_'=>"forms",
 ];

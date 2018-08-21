@@ -1,4 +1,4 @@
-<?
+<?php
 $SYS_FUNCTIONS = array(
    "0" => "",
    "009" => "",
@@ -36,5 +36,4 @@ $SYS_FUNCTIONS = array(
    "15003" => "sms/sendingbrowser.php",
    "15004" => "sms/sentbrowser.php",
    "15005" => "sms/vendbrowser.php"
-);
-?>
+);return $SYS_FUNCTIONS?>

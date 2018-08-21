@@ -79,7 +79,7 @@ class LisenceMiddleware
         {
             $funs  = new Functions();
             $funs->generalCache();
-            include(config("settings._IM_INC_DIR_")."sys_function.php" );
+            //include(config("settings._IM_INC_DIR_")."sys_function.php" );
         
         }
         return $next($request);

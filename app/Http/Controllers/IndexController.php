@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Dictionary;
 use App\Models\Branch;
 use App\Models\Role;
+use App\includeFunc;
 
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
@@ -87,29 +88,7 @@ eof;
         );
 /*
         $ANTIVIRUS_SCRIPT = file_get_contents( $ROOT_PATH."/include/antivirus.txt" );
-
-
-        if ( file_exists( $ROOT_PATH.( "/templates/".$TEMPLATE."/index.html" ) ) )
-        {
-            $OUTPUT_HTML = file_get_contents( $ROOT_PATH.( "/templates/".$TEMPLATE."/index.html" ) );
-        }
-        else
-        {
-            $OUTPUT_HTML = file_get_contents( $ROOT_PATH."/templates/default/index.html" );
-        }
-
-        $langs = TLanguage::getLanguages();
-        $LANGS = "";
-        foreach ($langs as $lang)
-        {
-            if ($lang['id_lang']== _USER_ID_LANG_)
-                $LANGUAGES .= "<li class=\"selected_language\"><img src=\"/images/l/{$lang['id_lang']}.jpg\" alt=\"{$lang['name']}\" width=\"16\" height=\"11\"/></li>";
-            else
-                $LANGUAGES .= "<li ><a href=\"?id_lang={$lang['id_lang']}\" title=\"{$lang['name']}\" ><img src=\"/images/l/{$lang['id_lang']}.jpg\" alt=\"{$lang['name']}\" width=\"16\" height=\"11\"/></a></li>";
-        }
-        $OUTPUT_HTML = str_replace( array("{title}","{javascript}","{focus_filed}","{autocomplete}","{form_submit}","{logo_img}","{username_cookie}","{ui}","{antivirus_script}","{tips}","{lg_username}","{lg_password}","{lg_login}","{language}"),array($APP_TITLE,$JAVA_SCRIPT,$FOCUS,$AUTOCOMPLETE,$ON_SUBMIT,$LOGO_IMG,$USER_NAME_COOKIE,$UI_SELECT,$ANTIVIRUS_SCRIPT,$TIPS,$LG_COMMON['username'],$LG_COMMON['userpass'],$LG_COMMON['login'],$LANGUAGES), $OUTPUT_HTML );
-
-        echo $OUTPUT_HTML;*/
+*/
         return view('index',$HtmlData);
     }
     
@@ -190,7 +169,6 @@ eof;
             $LG_ACTs = "";
             $Role = new Role();
             $roleArray = $Role->loadFunctions($RoleIDs,$LG_FUNCs,$LG_ACTs);
-
             Session::put("LG_ID",$this->user->Code);
             Session::put("LG_NAME",$this->user->Name);
             Session::put("LG_DESCRIPTION",$this->user->Description);
@@ -201,8 +179,6 @@ eof;
             Session::put("LG_DEPT_ID",$this->user->DeptID);
             Session::put("LG_TIME",time());
             Session::put("REG_INFO","");
-
-
             $this->useronline->refreshOnlineStatus($this->user->Code,time(),session_id());
             $this->useronline->clearOnlineStatus();
             //Event::addEvent($this->user->Code,1);
@@ -211,7 +187,6 @@ eof;
         }
         else
         {
-
             //验证失败
             switch ($LOGIN_MSG)
             {
@@ -329,8 +304,9 @@ eof;
 
     }
     
-    public function form(Request $request,$a){
-        $act = strtolower($a);
+    public function forms(Request $request,$action){
+        //use IncludeFunction->s;
+        $act = strtolower($action);
         $LANG_MODULES = array('function');
         //('config/config.inc.php');
         //include_once('init.php');
@@ -339,17 +315,17 @@ eof;
         $CURR_THEME = $CURR_THEME==""?"1":$CURR_THEME;
     
         $actArray = array(
-            "nav_menu" => array("URL"=>"navigator/menu.php" ,"BODYCLS"=>"leftmenubody"),
-            "nav_header" => array("URL"=>"navigator/header.php" ,"BODYCLS"=>"headerbody"),
-            "nav_shortcut" => array("URL"=>"navigator/shortcut.php" ,"BODYCLS"=>"shortcutbody"),
-            "nav_statusbar" => array("URL"=>"navigator/statusbar.php" ,"BODYCLS"=>"statusbar"),
-            "nav_desktop" => array("URL"=>"desktop/main.php" ,"BODYCLS"=>"tablebody"),
+            "nav_menu" => array("URL"=>"navigator/menu" ,"BODYCLS"=>"leftmenubody"),
+            "nav_header" => array("URL"=>"/general/navigator/header" ,"BODYCLS"=>"headerbody"),
+            "nav_shortcut" => array("URL"=>"navigator/shortcut" ,"BODYCLS"=>"shortcutbody"),
+            "nav_statusbar" => array("URL"=>"navigator/statusbar" ,"BODYCLS"=>"statusbar"),
+            "nav_desktop" => array("URL"=>"desktop/main" ,"BODYCLS"=>"tablebody"),
         );
-    
-        include_once(config("settings._IM_INC_DIR_")."sys_function_a.php");
-    
+
+        //include_once(config("settings._IM_INC_DIR_")."sys_function_a.php");
+        $SYS_FUNCTIONS_A = config("sys_function_a");
         $title = "";
-        $titleImg = "/images/outbox.gif";
+        $titleImg = "/smart/images/outbox.gif";
         if (isset($hideTitle))
         {
             $showTitle = "N";
@@ -361,7 +337,9 @@ eof;
             $bodyClass = "mainbody";
         }
         $resizeBody = true;
-    
+        $CURR_MODULE_ID ="";
+
+
         if (array_key_exists($act,$actArray))
         {
             $bodyClass = $actArray[$act]['BODYCLS'];
@@ -371,31 +349,54 @@ eof;
             $resizeBody = false;
             $act = $actArray[$act]['URL'];
         }
-        else
-            if (array_key_exists($act,$SYS_FUNCTIONS_A))
+        else if (array_key_exists($act,$SYS_FUNCTIONS_A))
+        {
+            if ($showTitle=="Y")
             {
-                if ($showTitle=="Y")
-                {
-                    $title = $SYS_FUNCTIONS_A[$act]['LANG_ID'];
+                $title = $SYS_FUNCTIONS_A[$act]['LANG_ID'];
                     //$title = $LG_FUNC[$title.'T'];
-                    if ($title=="")
-                        $title = $SYS_FUNCTIONS_A[$act]['DESCRIPTION'];
-                    if ($SYS_FUNCTIONS_A[$act]['IMAGE'] !="")
-                        $titleImg = "/images/menu/".$SYS_FUNCTIONS_A[$act]['IMAGE']."gif";
-                }
-                $CURR_MODULE_ID = $SYS_FUNCTIONS_A[$act]['ID'];
+                if ($title=="")
+                    $title = $SYS_FUNCTIONS_A[$act]['DESCRIPTION'];
+                if ($SYS_FUNCTIONS_A[$act]['IMAGE'] !="")
+                    $titleImg = "/smart/images/menu/".$SYS_FUNCTIONS_A[$act]['IMAGE']."gif";
             }
+            $CURR_MODULE_ID = $SYS_FUNCTIONS_A[$act]['ID'];
+        }
         $actURL = $act;
         $params = \Tool::getArgsStr("a");
         if ($params != "")
             $actURL .="?".$params;
+
+
         return view('general.form',[
+            'title'=>$title,
             'resizeBody'=>$resizeBody,
             'act' => $act,
             'bodyClass' => $bodyClass,
-            'CURR_MODULE_ID' => $CURR_MODULE_ID,
-            'module_action' => $SYS_FUNCTIONS_A[$act]['ID'],
-            '' => '',
+            'CURR_MODULE_ID' => "",
+            'module_action' => "",
+            'actURL' => $actURL,
+            'ErrMessages'=>\Tool::getMessageBox(__('LG_COMMON.NOTICE_ERROR'),__('LG_COMMON.INVALID_PARAMETER')),
+        ]);
+    }
+
+    public function header(){
+
+        $result = $this->dictionary->loadDictionaries("INTERFACE");
+        foreach ($result as $row)
+        {
+            ${$row['Code']} = $row['Description'];
+        }
+
+        $languages = SysLang::all();
+        list($CUR_YEAR,$CUR_MON,$CUR_DAY,$CUR_HOUR,$CUR_MINITE,$CUR_SECOND) = \Tool::DateTimeEx(hexdec(dechex(time())));
+        $TIME_STR="$CUR_YEAR,$CUR_MON,$CUR_DAY,$CUR_HOUR,$CUR_MINITE,$CUR_SECOND";
+        $CUR_WEEK = \Tool::getWeek();
+        $HEAD_TITLE = htmlspecialchars($HEAD_TITLE);
+        return view('general.navigator.header',[
+            'TIME_STR'=>$TIME_STR,
+            'CUR_WEEK'=>$CUR_WEEK,
+            'LANGS'=>$languages,
         ]);
     }
 }
